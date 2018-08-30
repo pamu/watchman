@@ -1,6 +1,6 @@
 name:                watchman
 version:             0.1.0.0
-github:              "githubuser/watchman"
+github:              "pamu/watchman"
 license:             BSD3
 author:              "Pamu"
 maintainer:          "pamu"
