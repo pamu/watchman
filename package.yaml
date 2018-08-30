@@ -1,0 +1,52 @@
+name:                watchman
+version:             0.1.0.0
+github:              "githubuser/watchman"
+license:             BSD3
+author:              "Pamu"
+maintainer:          "pamu"
+copyright:           "2018 Pamu"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+synopsis:            Serve static html content
+category:            Web
+
+description:         Please see the README on GitHub at <https://github.com/pamu/watchman#README.md>
+
+dependencies:
+- base >= 4.7 && < 5
+- wai
+- warp
+- wai-app-static
+- http-types
+- fsnotify
+- mtl
+- filepath
+- directory
+
+library:
+  source-dirs: src
+
+executables:
+  watchman:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - watchman
+
+tests:
+  watchman-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - watchman
