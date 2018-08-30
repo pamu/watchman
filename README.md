@@ -1,5 +1,10 @@
 # Watchman
 
+1. Serves static content. 
+2. Reloads and reservers content automatically when file content changes.
+
+Works only on Linux and Unix systems.
+
 ### Serve static html content
 
 ```bash
