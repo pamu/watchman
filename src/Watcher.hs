@@ -17,7 +17,7 @@ import System.FilePath (pathSeparators)
 watchUpdates :: FilePath -> IO () -> IO ()
 watchUpdates providerDir action = do
   shouldBuild <- newEmptyMVar
-  fullProviderDir <- canonicalizePath $ providerDir
+  fullProviderDir <- canonicalizePath providerDir
   manager <- FSNotify.startManager
   _ <-
     forkIO $
@@ -26,15 +26,15 @@ watchUpdates providerDir action = do
       handle
         (\e ->
            case fromException e of
-             Nothing -> putStrLn (show e)
+             Nothing -> print e
              Just async -> throw (async :: AsyncException))
         (update' event providerDir)
   void $
-    FSNotify.watchTree manager providerDir (not . isRemove) $ \event -> do
+    FSNotify.watchTree manager providerDir (not . isRemove) $ \event ->
       when True $ void $ tryPutMVar shouldBuild event
   where
     update' _ _ = action
 
 isRemove :: FSNotify.Event -> Bool
-isRemove (FSNotify.Removed {}) = True
+isRemove FSNotify.Removed {} = True
 isRemove _ = False

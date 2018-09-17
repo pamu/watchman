@@ -11,7 +11,7 @@ import Control.Concurrent
 
 --------------------------------------------------------------------------------
 import Logger (Logger)
-import qualified Logger as Logger
+import qualified Logger
 
 --------------------------------------------------------------------------------
 import Watcher (watchUpdates)
@@ -34,4 +34,4 @@ watch targetDir logger host port runServer = do
 --------------------------------------------------------------------------------
 -- | Start a server
 server :: FilePath -> Logger -> String -> Int -> IO ()
-server targetDir logger host port = staticServer logger targetDir host port
+server targetDir logger = staticServer logger targetDir

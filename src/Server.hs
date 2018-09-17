@@ -1,5 +1,5 @@
 -- Copyright (c) 2009 - 2017, Jasper Van der Jeugt
--- 
+--
 -- All rights reserved.
 --
 -- Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@ import qualified Network.Wai.Handler.Warp as Warp
 
 --------------------------------------------------------------------------------
 import Logger (Logger)
-import qualified Logger as Logger
+import qualified Logger
 
 staticServer ::
      Logger -- ^ Logger
