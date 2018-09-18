@@ -8,30 +8,26 @@ module Commands
 
 --------------------------------------------------------------------------------
 import Control.Concurrent
-
---------------------------------------------------------------------------------
-import Logger (Logger)
-import qualified Logger
-
---------------------------------------------------------------------------------
+import Logger (log)
+import Prelude hiding (log)
+import Server (staticServer)
 import Watcher (watchUpdates)
 
-import Server
-
--- | Watch for changes
-watch :: FilePath -> Logger -> String -> Int -> Bool -> IO ()
-watch targetDir logger host port runServer = do
-  _ <- forkIO $ watchUpdates targetDir logMessage
+--------------------------------------------------------------------------------
+-- | Watch
+watch :: FilePath -> String -> Int -> Bool -> IO ()
+watch targetDir host port runServer = do
+  _ <- forkIO $ watchUpdates targetDir logAction
   server'
   where
     loop = threadDelay 100000 >> loop
     server' =
       if runServer
-        then server targetDir logger host port
+        then server targetDir host port
         else loop
-    logMessage = Logger.header logger "detected changes, reloading ..."
+    logAction = log "detected changes, reloading ..."
 
 --------------------------------------------------------------------------------
 -- | Start a server
-server :: FilePath -> Logger -> String -> Int -> IO ()
-server targetDir logger = staticServer logger targetDir
+server :: FilePath -> String -> Int -> IO ()
+server = staticServer

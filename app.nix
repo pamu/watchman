@@ -1,5 +1,5 @@
 { mkDerivation, base, directory, filepath, fsnotify, hpack
-, http-types, mtl, stdenv, wai, wai-app-static, warp
+, http-types, mtl, stdenv, wai, wai-app-static, warp, parsec
 }:
 mkDerivation {
   pname = "watchman";
@@ -9,16 +9,16 @@ mkDerivation {
   isExecutable = true;
   libraryHaskellDepends = [
     base directory filepath fsnotify http-types mtl wai wai-app-static
-    warp
+    warp parsec
   ];
   libraryToolDepends = [ hpack ];
   executableHaskellDepends = [
     base directory filepath fsnotify http-types mtl wai wai-app-static
-    warp
+    warp parsec
   ];
   testHaskellDepends = [
     base directory filepath fsnotify http-types mtl wai wai-app-static
-    warp
+    warp parsec
   ];
   preConfigure = "hpack";
   homepage = "https://github.com/pamu/watchman#readme";

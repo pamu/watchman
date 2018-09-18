@@ -14,6 +14,7 @@ import System.Directory (canonicalizePath)
 import qualified System.FSNotify as FSNotify
 import System.FilePath (pathSeparators)
 
+--------------------------------------------------------------------------------
 watchUpdates :: FilePath -> IO () -> IO ()
 watchUpdates providerDir action = do
   shouldBuild <- newEmptyMVar

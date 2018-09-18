@@ -25,6 +25,7 @@ dependencies:
 - mtl
 - filepath
 - directory
+- parsec
 
 library:
   source-dirs: src

@@ -1,42 +1,52 @@
 module Main where
 
+import CommandLine (CommandLine(..), commandLine)
+
+--------------------------------------------------------------------------------
 import Commands (server, watch)
-import Logger (Logger)
-import qualified Logger
-import Model
-import System.Directory
-import System.Environment
+import Control.Monad (mfilter)
+import Data.Maybe (fromMaybe)
+import Logger (log)
+import Model (Command, Config(..), Host, Port, defaultConfig)
+import Prelude hiding (log)
+import System.Directory (doesDirectoryExist, getCurrentDirectory)
+import System.Environment (getArgs)
+import Text.Parsec (parse)
+import Text.Parsec.Error
 
-data Config = Config
-  { dir :: FilePath
-  , host :: Host
-  , port :: Port
-  , cmd :: Command
-  } deriving (Show)
-
-defaultConfig :: FilePath -> Config
-defaultConfig dir =
-  Config {dir = dir, host = "127.0.0.1", port = 8000, cmd = "server"}
-
+--------------------------------------------------------------------------------
 config :: [String] -> Config
-config _ = undefined
+config args = undefined
 
 main :: IO ()
 main = do
-  logger <- Logger.new Logger.Message
-  args <- getArgs
-  currentDir <- getCurrentDirectory
-  let config = defaultConfig currentDir
-  case args of
-    ("watch":_) -> do
-      Logger.header
-        logger
-        ("Watching directory " ++ show currentDir ++ " for changes")
-      watch currentDir logger (host config) (port config) True
-    ("server":_) -> do
-      server currentDir logger (host config) (port config)
-      Logger.header logger $ "Serving from directory " ++ show currentDir
-      Logger.header
-        logger
-        "Usage: watchman -d <Directory Path> -p <Port> watch|server"
-  Logger.flush logger
+  cmdLine <- unwords <$> getArgs
+  case (parse commandLine "Command line" cmdLine) of
+    Left err -> do
+      print err
+      putStrLn ""
+      log "Usage: watchman -d <Directory Path> -p <Port> watch|server"
+    Right cmdLineParsed -> do
+      currentDir <-
+        case (_dir cmdLineParsed) of
+          Nothing -> Just <$> getCurrentDirectory
+          Just dir -> do
+            result <- doesDirectoryExist dir
+            if result
+              then return $ Just dir
+              else return Nothing
+      case currentDir of
+        Nothing -> putStrLn "Valid directory needed"
+        Just validDir -> do
+          let processedConfig = defaultConfig validDir
+          let portChanged =
+                (\x -> processedConfig {port = x}) <$> (_port cmdLineParsed)
+          let config = fromMaybe processedConfig portChanged
+          case (cmd config) of
+            "watch" -> do
+              log
+                ("Watching directory " ++ (show $ dir config) ++ " for changes")
+              watch (dir config) (host config) (port config) True
+            "server" -> do
+              log $ "Serving from directory " ++ (show $ dir config)
+              server (dir config) (host config) (port config)
