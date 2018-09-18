@@ -1,6 +1,6 @@
 # Watchman
 
-1. Serves static content. 
+1. Serves static content.
 2. Reloads and reservers content automatically when file content changes.
 
 Works only on Linux and Unix systems.
@@ -27,10 +27,21 @@ Helps in auto reloading of changes. Changes can be previewed without restarting
 the server. Make changes to the html files and hit browser refresh to see the changes.
 Save time while development html based apps.
 
+### Options
+
+`-d` for target Directory (by default current directory is considered for serving or watching)
+
+`-p` for port on which the sever has to be run
+
+```bash
+[watchman] watchman -d ~/ -p 2000 server                            master  ✭
+Serving from directory "/Users/foobar/"
+Listening on http://127.0.0.1:2000
+```
 
 ### Build
 
-#### Install stack 
+#### Install stack
 
 ```bash
 curl -sSL https://get.haskellstack.org/ | sh
@@ -48,7 +59,7 @@ wget -qO- https://get.haskellstack.org/ | sh
 git clone https://github.com/pamu/watchman.git
 ```
 
-    or 
+    or
 
 ```bash
 git clone git@github.com:pamu/watchman.git

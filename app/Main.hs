@@ -22,11 +22,11 @@ main :: IO ()
 main = do
   cmdLine <- unwords <$> getArgs
   case (parse commandLine "Command line" cmdLine) of
-    Left err -> do
+    (Left err) -> do
       print err
       putStrLn ""
       log "Usage: watchman -d <Directory Path> -p <Port> watch|server"
-    Right cmdLineParsed -> do
+    (Right cmdLineParsed) -> do
       currentDir <-
         case (_dir cmdLineParsed) of
           Nothing -> Just <$> getCurrentDirectory
