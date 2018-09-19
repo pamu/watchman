@@ -15,9 +15,6 @@ import Text.Parsec (parse)
 import Text.Parsec.Error
 
 --------------------------------------------------------------------------------
-config :: [String] -> Config
-config args = undefined
-
 main :: IO ()
 main = do
   cmdLine <- unwords <$> getArgs

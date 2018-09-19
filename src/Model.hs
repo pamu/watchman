@@ -13,10 +13,10 @@ type Command = String
 type Host = String
 
 data Config = Config
-  { dir :: FilePath
-  , host :: Host
-  , port :: Port
-  , cmd :: Command
+  { dir :: !FilePath
+  , host :: !Host
+  , port :: !Port
+  , cmd :: !Command
   } deriving (Show)
 
 defaultConfig :: FilePath -> Config

@@ -43,9 +43,9 @@ cmd :: Parser Command
 cmd = string "server" <|> string "watch"
 
 data CommandLine = CommandLine
-  { _dir :: Maybe FilePath
-  , _port :: Maybe Port
-  , _cmd :: Command
+  { _dir :: !(Maybe FilePath)
+  , _port :: !(Maybe Port)
+  , _cmd :: !Command
   } deriving (Show)
 
 commandLine :: Parser CommandLine
